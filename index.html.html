@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Pentru Bita 💖</title>
+<style>
+  body {
+    background: #ffe6f0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 80px;
+    overflow: hidden;
+  }
+  h1 { margin-bottom: 30px; }
+  button {
+    font-size: 22px;
+    padding: 15px 35px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: #ff4d88;
+    color: white;
+    margin: 10px;
+  }
+  button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+  #sliderBox {
+    display: none;
+    margin-top: 40px;
+  }
+  input[type="range"] { width: 60%; }
+  .floating {
+    position: absolute;
+    animation: float 4s linear forwards;
+    font-size: 32px;
+  }
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-700px); opacity: 0; }
+  }
+  #ringFinal { font-size: 90px; margin-top: 30px; display: none; }
+  #finalText {
+    display: none;
+    font-size: 36px;
+    margin-top: 40px;
+    color: #ff1a75;
+    font-weight: bold;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h1 id="question">Hei bună fată, cf?</h1>
+
+<div id="action">
+  <button onclick="firstAnswer('stau')">Stau</button>
+  <button onclick="firstAnswer('roblox')">Mă joc Roblox</button>
+</div>
+
+<div id="secondPage" style="display:none;">
+  <h1>Mă gândeam la tine 😉</h1>
+  <button onclick="secondAnswer()">Vrajeală</button>
+  <button onclick="secondAnswer()">Yay</button>
+</div>
+
+<div id="sliderBox">
+  <h2>Cât de mult mă iubești? 😏</h2>
+  <input type="range" min="0" max="100" value="0" id="loveRange">
+  <p><span id="percent">0</span>%</p>
+  <button id="continueBtn" onclick="continueAfterSlider()" disabled>Continuă</button>
+</div>
+
+<div id="ringFinal">💍</div>
+
+<div id="finalText">
+  Te iubesc fa bita, ești viața mea, sufletul meu, inima mea.<br>
+  Te iubesc mult rău de tot.<br>
+  Ești nevasta mea pt tt viața ❤️❤️<br>
+  Primesti un cadou când nvdm 🤗
+</div>
+
+<audio id="song1" src="ciumi-ciumi.mp3" loop></audio>
+<audio id="song2" src="inima-din-mine.mp3"></audio>
+
+<script>
+let step = 0;
+let musicStarted = false;
+
+const song1 = document.getElementById("song1");
+const song2 = document.getElementById("song2");
+
+function startMusic() {
+  if (!musicStarted) {
+    song1.volume = 1;
+    song1.play();
+    musicStarted = true;
+  }
+}
+
+function firstAnswer(choice) {
+  startMusic();
+  document.getElementById("action").style.display = "none";
+  document.getElementById("secondPage").style.display = "block";
+}
+
+function secondAnswer() {
+  document.getElementById("secondPage").style.display = "none";
+  next();
+}
+
+function next() {
+  step++;
+  if (step === 1) {
+    document.getElementById("question").innerText = "Original bulgăresc 100%? 🇧🇬😜";
+    document.getElementById("action").innerHTML = '<button onclick="next()">DA</button>';
+    document.getElementById("action").style.display = "block";
+  } else if (step === 2) {
+    document.getElementById("action").style.display = "none";
+    document.getElementById("sliderBox").style.display = "block";
+  } else if (step === 3) {
+    document.getElementById("sliderBox").style.display = "none";
+    document.getElementById("question").innerText = "Atunci… 😏";
+    document.getElementById("action").innerHTML = '<button onclick="next()">DA</button>';
+    document.getElementById("action").style.display = "block";
+  } else if (step === 4) {
+    document.getElementById("question").innerText = "ți-l bag? 🤗🤗🙏🙏🥰😜";
+    document.getElementById("ringFinal").style.display = "block";
+    document.getElementById("action").innerHTML = '<button onclick="showFinal()">DA</button>';
+  }
+}
+
+function showFinal() {
+  document.getElementById("question").style.display = "none";
+  document.getElementById("action").style.display = "none";
+  document.getElementById("finalText").style.display = "block";
+}
+
+const range = document.getElementById("loveRange");
+const percent = document.getElementById("percent");
+const continueBtn = document.getElementById("continueBtn");
+
+range.oninput = () => {
+  percent.innerText = range.value;
+  if (range.value == 100) {
+    continueBtn.disabled = false;
+    heartsAndRings();
+    crossFadeMusic();
+  } else {
+    continueBtn.disabled = true;
+  }
+};
+
+function continueAfterSlider() {
+  next();
+}
+
+function heartsAndRings() {
+  for (let i=0;i<40;i++) {
+    const el = document.createElement("div");
+    el.className = "floating";
+    el.innerText = Math.random()>0.5?"❤️":"💍";
+    el.style.left = Math.random()*window.innerWidth+"px";
+    el.style.bottom = "0px";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+}
+
+function crossFadeMusic() {
+  song2.volume=0;
+  song2.play();
+  let fade=setInterval(()=>{
+    if(song1.volume>0.02){
+      song1.volume-=0.02;
+      song2.volume+=0.02;
+    }else{
+      song1.pause();
+      clearInterval(fade);
+    }
+  },150);
+}
+</script>
+
+</body>
+</html>
